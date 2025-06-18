@@ -1,0 +1,86 @@
+<script>
+    let params = new URLSearchParams(document.location.search);
+
+    let startParam = params.get("start")
+    let startDate = new Date("2025-06-18");
+    if (startParam) {
+        startDate = new Date(startParam);
+    }
+
+    let todayParam = params.get("today");
+    let todayDate = new Date()
+    if (todayParam) {
+        todayDate = new Date(todayParam);
+    }
+
+    let levelsParam = params.get("levels")
+    let levels = 7;
+    if (levelsParam) {
+        levels = levelsParam;
+    }
+
+</script>
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Leitner
+    </title>
+</head>
+
+<body>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center;
+            background-color: powderblue;
+            color: black;
+        }
+    </style>
+    <h1 id="date"></h1>
+    <h1 id="levels"></h1>
+
+    <script>
+        function getDaysSinceStart(date) {
+            let timeDiff = Math.abs(date.getTime() - startDate.getTime());
+            let daysDiff = Math.round(timeDiff / (1000 * 3600 * 24));
+            if (daysDiff == 0) {
+                daysDiff = 1
+            }
+            return daysDiff
+        }
+
+        function getInterval(level) {
+            return 2 ** (level - 1)
+        }
+
+        function getLevelsForDate(date) {
+            levelsForDate = []
+            daysSinceStart = getDaysSinceStart(date)
+            for (var i = 1; i <= levels; i++) {
+                console.log(i);
+                console.log(daysSinceStart)
+                if ((daysSinceStart % getInterval(i)) == 0) {
+                    levelsForDate.unshift(i);
+                }
+            }
+            return levelsForDate;
+        }
+
+        function show(date) {
+            document.querySelector('#date').textContent = date.toDateString();;
+            document.querySelector('#levels').textContent = getLevelsForDate(date)
+        }
+
+        function load() {
+            show(todayDate);
+        }
+
+        load()
+    </script>
+</body>
+
+</html>
