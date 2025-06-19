@@ -2,7 +2,7 @@
     let params = new URLSearchParams(document.location.search);
 
     let startParam = params.get("start")
-    let startDate = new Date("2025-06-18");
+    let startDate = new Date("2025-06-19");
     if (startParam) {
         startDate = new Date(startParam);
     }
@@ -11,12 +11,6 @@
     let todayDate = new Date()
     if (todayParam) {
         todayDate = new Date(todayParam);
-    }
-
-    let levelsParam = params.get("levels")
-    let levels = 7;
-    if (levelsParam) {
-        levels = levelsParam;
     }
 
 </script>
@@ -44,13 +38,10 @@
     <h1 id="levels"></h1>
 
     <script>
-        function getDaysSinceStart(date) {
+        function getDay(date) {
             let timeDiff = Math.abs(date.getTime() - startDate.getTime());
-            let daysDiff = Math.round(timeDiff / (1000 * 3600 * 24));
-            if (daysDiff == 0) {
-                daysDiff = 1
-            }
-            return daysDiff
+            let daysDiff = Math.floor(timeDiff / (1000 * 3600 * 24));
+            return (daysDiff % 64) + 1
         }
 
         function getInterval(level) {
@@ -58,16 +49,28 @@
         }
 
         function getLevelsForDate(date) {
-            levelsForDate = []
-            daysSinceStart = getDaysSinceStart(date)
-            for (var i = 1; i <= levels; i++) {
-                console.log(i);
-                console.log(daysSinceStart)
-                if ((daysSinceStart % getInterval(i)) == 0) {
-                    levelsForDate.unshift(i);
-                }
+            levels = [1]
+            day = getDay(date)
+            console.log(day)
+            if ((day - 1) % 2 == 0) {
+                levels.unshift(2)
             }
-            return levelsForDate;
+            if ((day - 2) % 4 == 0) {
+                levels.unshift(3)
+            }
+            if ([4, 13, 20, 29, 36, 45, 52, 61].includes(day)) {
+                levels.unshift(4)
+            }
+            if ([12, 28, 44, 60].includes(day)) {
+                levels.unshift(5)
+            }
+            if ([24, 59].includes(day)) {
+                levels.unshift(6)
+            }
+            if ([56].includes(day)) {
+                levels.unshift(7)
+            }
+            return levels;
         }
 
         function show(date) {

@@ -1,5 +1,7 @@
 # Leitner Box Level for Today
 
+## Follows this [schedule](https://fluent-forever.com/wp-content/uploads/2014/05/LeitnerSchedule.pdf)
+
 ### Usage
 - Visit this site [Github Pages](https://oldmanz.github.io/leitner/)
 - Configure with URL params
